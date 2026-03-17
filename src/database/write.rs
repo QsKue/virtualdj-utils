@@ -163,12 +163,12 @@ fn write_scan<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
     }
 
     if let Some(v) = scan.bpm {
-        let s = v.to_string();
+        let s = format!("{:.6}", v);
         elem.push_attribute(("Bpm", s.as_str()));
     }
 
     if let Some(v) = scan.alt_bpm {
-        let s = v.to_string();
+        let s = format!("{:.6}", v);
         elem.push_attribute(("AltBpm", s.as_str()));
     }
 
