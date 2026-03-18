@@ -173,7 +173,7 @@ fn read_comment_text(reader: &mut Reader<&[u8]>) -> Result<String> {
 }
 
 fn parse_scan(song: &mut Song, e: &BytesStart<'_>) -> Result<()> {
-    let mut scan = song.scan.take().unwrap_or_default();
+    let mut scan = song.scan_data.take().unwrap_or_default();
 
     for attr in e.attributes() {
         let attr = attr?;
@@ -191,7 +191,7 @@ fn parse_scan(song: &mut Song, e: &BytesStart<'_>) -> Result<()> {
         }
     }
 
-    song.scan = Some(scan);
+    song.scan_data = Some(scan);
     Ok(())
 }
 

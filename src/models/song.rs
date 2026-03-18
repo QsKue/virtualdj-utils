@@ -29,7 +29,7 @@ pub struct Song {
 
     pub comment: Option<String>,
 
-    pub scan: Option<ScanData>,
+    pub scan_data: Option<ScanData>,
 
     pub pois: Vec<Poi>,
 }

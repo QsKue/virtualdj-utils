@@ -151,7 +151,7 @@ fn write_comment<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
 }
 
 fn write_scan<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
-    let Some(scan) = song.scan.as_ref() else {
+    let Some(scan) = song.scan_data.as_ref() else {
         return Ok(());
     };
 
