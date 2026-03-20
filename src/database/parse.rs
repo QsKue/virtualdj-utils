@@ -1,9 +1,9 @@
 use std::fs;
 
 use quick_xml::{
+    Reader,
     events::{BytesStart, Event},
     name::QName,
-    Reader,
 };
 
 use crate::{
@@ -58,7 +58,11 @@ pub fn parse_database_str(xml: &str) -> Result<Vec<Song>> {
                     match parse_poi(e) {
                         Ok(poi) => song.pois.push(poi),
                         Err(err) => {
-                            println!("Skipped poi for {}, err: {:#?}", song.path.as_deref().unwrap_or("EMPTY PATH"), err);
+                            println!(
+                                "Skipped poi for {}, err: {:#?}",
+                                song.path.as_deref().unwrap_or("EMPTY PATH"),
+                                err
+                            );
                             continue;
                         }
                     };
@@ -125,7 +129,7 @@ fn parse_tags(song: &mut Song, e: &BytesStart<'_>) -> Result<()> {
                     eprintln!("Invalid Year value: {e}");
                     song.year = None;
                 }
-            }
+            },
             b"Stars" => song.stars = parse_opt_num(value)?,
             b"User1" => song.user1 = value,
             b"User2" => song.user2 = value,
@@ -242,30 +246,51 @@ fn parse_poi(e: &BytesStart<'_>) -> Result<Poi> {
 
         Some("remix") => {
             let pos = require(pos, "remix", "Pos")?;
-            Poi::Remix { pos, num, name, color }
+            Poi::Remix {
+                pos,
+                num,
+                name,
+                color,
+            }
         }
 
         Some("loop") => {
             let pos = require(pos, "loop", "Pos")?;
             let size = require(size, "loop", "Size")?;
-            Poi::Loop { pos, slot, size, auto_trigger: auto_trigger.unwrap_or(false) }
+            Poi::Loop {
+                pos,
+                slot,
+                size,
+                auto_trigger: auto_trigger.unwrap_or(false),
+            }
         }
 
         Some("action") => {
             let pos = require(pos, "action", "Pos")?;
-            Poi::Action { pos, num, name, action }
+            Poi::Action {
+                pos,
+                num,
+                name,
+                action,
+            }
         }
 
         Some("automix") => {
             let pos = pos.unwrap_or(0.0); // default in vdj is 0.0 for some reason
             let point = require(point.as_deref(), "automix", "Point")?;
             let variant = parse_automix_point(Some(point))?;
-            Poi::Automix { pos, variant  }
+            Poi::Automix { pos, variant }
         }
 
         _ => {
             let pos = require(pos, "cue", "Pos")?;
-            Poi::Cue { pos, num, name, color, load: poi_type.as_deref() == Some("load") }
+            Poi::Cue {
+                pos,
+                num,
+                name,
+                color,
+                load: poi_type.as_deref() == Some("load"),
+            }
         }
     };
 
@@ -293,7 +318,6 @@ fn require<T>(v: Option<T>, poi: &'static str, field: &'static str) -> Result<T>
 fn decode_attr_value(
     attr: &quick_xml::events::attributes::Attribute<'_>,
 ) -> Result<Option<String>> {
-    
     let raw = std::str::from_utf8(&attr.value)?;
 
     match quick_xml::escape::unescape(raw) {
@@ -305,7 +329,7 @@ fn decode_attr_value(
             let v = quick_xml::escape::unescape(&sanitized)
                 .map_err(|e| Error::Xml(quick_xml::Error::Escape(e)))?
                 .into_owned();
-            
+
             Ok(Some(v))
         }
     }
@@ -342,7 +366,7 @@ fn sanitize_ampersands(input: &str) -> String {
 fn parse_opt_bool(value: Option<String>) -> Result<Option<bool>> {
     match value.as_deref() {
         None => Ok(None),
-        Some ("yes") | Some("1") | Some("true") | Some("TRUE") => Ok(Some(true)),
+        Some("yes") | Some("1") | Some("true") | Some("TRUE") => Ok(Some(true)),
         _ => Ok(Some(false)),
     }
 }

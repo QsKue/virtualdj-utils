@@ -1,4 +1,8 @@
-use std::{fmt, io, num::{ParseFloatError, ParseIntError}, string::FromUtf8Error};
+use std::{
+    fmt, io,
+    num::{ParseFloatError, ParseIntError},
+    string::FromUtf8Error,
+};
 
 #[derive(Debug)]
 pub enum Error {
@@ -44,33 +48,49 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {}
 
 impl From<io::Error> for Error {
-    fn from(value: io::Error) -> Self { Self::Io(value) }
+    fn from(value: io::Error) -> Self {
+        Self::Io(value)
+    }
 }
 
 impl From<quick_xml::Error> for Error {
-    fn from(value: quick_xml::Error) -> Self { Self::Xml(value) }
+    fn from(value: quick_xml::Error) -> Self {
+        Self::Xml(value)
+    }
 }
 
 impl From<quick_xml::events::attributes::AttrError> for Error {
-    fn from(value: quick_xml::events::attributes::AttrError) -> Self { Self::Attr(value) }
+    fn from(value: quick_xml::events::attributes::AttrError) -> Self {
+        Self::Attr(value)
+    }
 }
 
 impl From<quick_xml::encoding::EncodingError> for Error {
-    fn from(value: quick_xml::encoding::EncodingError) -> Self { Self::Encoding(value) }
+    fn from(value: quick_xml::encoding::EncodingError) -> Self {
+        Self::Encoding(value)
+    }
 }
 
 impl From<std::str::Utf8Error> for Error {
-    fn from(value: std::str::Utf8Error) -> Self { Self::Utf8(value) }
+    fn from(value: std::str::Utf8Error) -> Self {
+        Self::Utf8(value)
+    }
 }
 
 impl From<FromUtf8Error> for Error {
-    fn from(value: FromUtf8Error) -> Self { Self::FromUtf8(value) }
+    fn from(value: FromUtf8Error) -> Self {
+        Self::FromUtf8(value)
+    }
 }
 
 impl From<ParseIntError> for Error {
-    fn from(value: ParseIntError) -> Self { Self::ParseInt(value) }
+    fn from(value: ParseIntError) -> Self {
+        Self::ParseInt(value)
+    }
 }
 
 impl From<ParseFloatError> for Error {
-    fn from(value: ParseFloatError) -> Self { Self::ParseFloat(value) }
+    fn from(value: ParseFloatError) -> Self {
+        Self::ParseFloat(value)
+    }
 }

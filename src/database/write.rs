@@ -4,8 +4,8 @@ use std::{
 };
 
 use quick_xml::{
-    events::{BytesDecl, BytesEnd, BytesStart, BytesText, Event},
     Writer,
+    events::{BytesDecl, BytesEnd, BytesStart, BytesText, Event},
 };
 
 use crate::{
@@ -68,17 +68,39 @@ fn write_song<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
 fn write_tags<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
     let mut elem = BytesStart::new("Tags");
 
-    if let Some(v) = song.author.as_deref() { elem.push_attribute(("Author", v)); }
-    if let Some(v) = song.title.as_deref() { elem.push_attribute(("Title", v)); }
-    if let Some(v) = song.genre.as_deref() { elem.push_attribute(("Genre", v)); }
-    if let Some(v) = song.album.as_deref() { elem.push_attribute(("Album", v)); }
-    if let Some(v) = song.composer.as_deref() { elem.push_attribute(("Composer", v)); }
-    if let Some(v) = song.label.as_deref() { elem.push_attribute(("Label", v)); }
-    if let Some(v) = song.remix.as_deref() { elem.push_attribute(("Remix", v)); }
-    if let Some(v) = song.remixer.as_deref() { elem.push_attribute(("Remixer", v)); }
-    if let Some(v) = song.grouping.as_deref() { elem.push_attribute(("Grouping", v)); }
-    if let Some(v) = song.user1.as_deref() { elem.push_attribute(("User1", v)); }
-    if let Some(v) = song.user2.as_deref() { elem.push_attribute(("User2", v)); }
+    if let Some(v) = song.author.as_deref() {
+        elem.push_attribute(("Author", v));
+    }
+    if let Some(v) = song.title.as_deref() {
+        elem.push_attribute(("Title", v));
+    }
+    if let Some(v) = song.genre.as_deref() {
+        elem.push_attribute(("Genre", v));
+    }
+    if let Some(v) = song.album.as_deref() {
+        elem.push_attribute(("Album", v));
+    }
+    if let Some(v) = song.composer.as_deref() {
+        elem.push_attribute(("Composer", v));
+    }
+    if let Some(v) = song.label.as_deref() {
+        elem.push_attribute(("Label", v));
+    }
+    if let Some(v) = song.remix.as_deref() {
+        elem.push_attribute(("Remix", v));
+    }
+    if let Some(v) = song.remixer.as_deref() {
+        elem.push_attribute(("Remixer", v));
+    }
+    if let Some(v) = song.grouping.as_deref() {
+        elem.push_attribute(("Grouping", v));
+    }
+    if let Some(v) = song.user1.as_deref() {
+        elem.push_attribute(("User1", v));
+    }
+    if let Some(v) = song.user2.as_deref() {
+        elem.push_attribute(("User2", v));
+    }
 
     if let Some(v) = song.track_number {
         let s = v.to_string();
@@ -199,14 +221,19 @@ fn write_pois<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
                 let pos_s = pos.to_string();
                 elem.push_attribute(("Pos", pos_s.as_str()));
                 elem.push_attribute(("Type", "beatgrid"));
-                
+
                 if let Some(v) = bpm {
                     let s = v.to_string();
                     elem.push_attribute(("Bpm", s.as_str()));
                 }
             }
 
-            Poi::Remix { pos, num, name, color } => {
+            Poi::Remix {
+                pos,
+                num,
+                name,
+                color,
+            } => {
                 let pos_s = pos.to_string();
                 elem.push_attribute(("Pos", pos_s.as_str()));
                 elem.push_attribute(("Type", "remix"));
@@ -226,7 +253,12 @@ fn write_pois<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
                 }
             }
 
-            Poi::Loop { pos, slot, size, auto_trigger } => {
+            Poi::Loop {
+                pos,
+                slot,
+                size,
+                auto_trigger,
+            } => {
                 let pos_s = pos.to_string();
                 elem.push_attribute(("Pos", pos_s.as_str()));
                 elem.push_attribute(("Type", "loop"));
@@ -244,7 +276,12 @@ fn write_pois<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
                 }
             }
 
-            Poi::Action { pos, num, name, action } => {
+            Poi::Action {
+                pos,
+                num,
+                name,
+                action,
+            } => {
                 let pos_s = pos.to_string();
                 elem.push_attribute(("Pos", pos_s.as_str()));
                 elem.push_attribute(("Type", "action"));
@@ -270,7 +307,13 @@ fn write_pois<W: Write>(writer: &mut Writer<W>, song: &Song) -> Result<()> {
                 elem.push_attribute(("Point", variant.as_str()));
             }
 
-            Poi::Cue { pos, num, name, color, load } => {
+            Poi::Cue {
+                pos,
+                num,
+                name,
+                color,
+                load,
+            } => {
                 let pos_s = pos.to_string();
                 elem.push_attribute(("Pos", pos_s.as_str()));
 

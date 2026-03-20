@@ -1,4 +1,3 @@
-
 #[derive(Debug, Clone, Default)]
 pub struct Song {
     pub path: Option<String>,
